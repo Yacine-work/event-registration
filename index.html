@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل الفعالية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f4f2ee;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.08);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e6f1fb;
+      color: #185fa5;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    h1 { font-size: 22px; font-weight: 700; color: #1a1a1a; margin-bottom: 0.3rem; }
+    .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 1.5rem; line-height: 1.7; }
+    hr { border: none; border-top: 1px solid #f0ede8; margin-bottom: 1.5rem; }
+
+    .field { margin-bottom: 1rem; }
+    label { display: block; font-size: 13px; color: #4b5563; font-weight: 500; margin-bottom: 6px; }
+
+    input {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: 'Tajawal', sans-serif;
+      color: #1a1a1a;
+      background: #fff;
+      transition: border-color 0.15s;
+    }
+    input:focus { outline: none; border-color: #185fa5; box-shadow: 0 0 0 3px rgba(24,95,165,0.1); }
+    input::placeholder { color: #9ca3af; }
+    input[type="tel"], input[type="email"] { direction: ltr; text-align: right; }
+
+    .error { font-size: 12px; color: #dc2626; margin-top: 4px; display: none; }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      background: #185fa5;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: 'Tajawal', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+    button:hover { background: #0c447c; }
+    button:active { transform: scale(0.98); }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .privacy {
+      text-align: center;
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 1rem;
+    }
+
+    /* Success State */
+    .success { display: none; text-align: center; padding: 1rem 0; }
+    .success-icon { font-size: 48px; margin-bottom: 1rem; }
+    .success h2 { font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 0.5rem; }
+    .success p { font-size: 14px; color: #6b7280; line-height: 1.7; }
+    .code-box {
+      display: inline-block;
+      background: #f4f2ee;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      color: #185fa5;
+      padding: 12px 28px;
+      margin: 1.2rem 0;
+      font-family: monospace;
+    }
+    .alert-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      color: #dc2626;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      margin-top: 1rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">تسجيل الحضور</div>
+    <h1>الفعالية السنوية ٢٠٢٥</h1>
+    <p class="subtitle">سجّل بياناتك وستصلك رمز التسجيل الخاص بك فوراً على بريدك الإلكتروني</p>
+    <hr />
+
+    <div id="form-area">
+      <div class="field">
+        <label>الاسم الأول</label>
+        <input id="f-first" type="text" placeholder="محمد" />
+        <span class="error" id="e-first">الرجاء إدخال الاسم الأول</span>
+      </div>
+      <div class="field">
+        <label>اسم العائلة</label>
+        <input id="f-last" type="text" placeholder="العمري" />
+        <span class="error" id="e-last">الرجاء إدخال اسم العائلة</span>
+      </div>
+      <div class="field">
+        <label>رقم الهاتف</label>
+        <input id="f-phone" type="tel" placeholder="+966 5X XXX XXXX" />
+        <span class="error" id="e-phone">الرجاء إدخال رقم هاتف صحيح</span>
+      </div>
+      <div class="field">
+        <label>البريد الإلكتروني</label>
+        <input id="f-email" type="email" placeholder="example@email.com" />
+        <span class="error" id="e-email">الرجاء إدخال بريد إلكتروني صحيح</span>
+      </div>
+
+      <button id="submit-btn" onclick="handleSubmit()">تسجيل الآن</button>
+      <div class="alert-error" id="api-error">حدث خطأ، يرجى المحاولة مجدداً.</div>
+      <p class="privacy">🔒 معلوماتك محمية ولن تُشارك مع أي طرف ثالث</p>
+    </div>
+
+    <div class="success" id="success-area">
+      <div class="success-icon">✅</div>
+      <h2>تم تسجيلك بنجاح!</h2>
+      <div class="code-box" id="code-display">——————</div>
+      <p>
+        تم إرسال رمز تسجيلك إلى بريدك الإلكتروني.<br />
+        احتفظ بهذا الرمز معك يوم الفعالية.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    function validate() {
+      let ok = true;
+      const fields = [
+        { id: 'f-first',  err: 'e-first',  test: v => v.trim().length > 1 },
+        { id: 'f-last',   err: 'e-last',   test: v => v.trim().length > 1 },
+        { id: 'f-phone',  err: 'e-phone',  test: v => v.trim().length >= 7 },
+        { id: 'f-email',  err: 'e-email',  test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) }
+      ];
+      fields.forEach(({ id, err, test }) => {
+        const val = document.getElementById(id).value;
+        const errEl = document.getElementById(err);
+        if (!test(val)) { errEl.style.display = 'block'; ok = false; }
+        else errEl.style.display = 'none';
+      });
+      return ok;
+    }
+
+    async function handleSubmit() {
+      if (!validate()) return;
+      const btn = document.getElementById('submit-btn');
+      const apiErr = document.getElementById('api-error');
+      btn.disabled = true;
+      btn.textContent = 'جارٍ التسجيل...';
+      apiErr.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName: document.getElementById('f-first').value.trim(),
+            lastName:  document.getElementById('f-last').value.trim(),
+            phone:     document.getElementById('f-phone').value.trim(),
+            email:     document.getElementById('f-email').value.trim()
+          })
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Server error');
+
+        document.getElementById('code-display').textContent = data.code;
+        document.getElementById('form-area').style.display = 'none';
+        document.getElementById('success-area').style.display = 'block';
+      } catch (err) {
+        apiErr.textContent = 'حدث خطأ: ' + err.message;
+        apiErr.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'تسجيل الآن';
+      }
+    }
+  </script>
+</body>
+</html>
